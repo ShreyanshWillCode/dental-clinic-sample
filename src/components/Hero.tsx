@@ -129,10 +129,9 @@ function HeroImage() {
         />
       </div>
 
-      {/* Badge — left */}
       <FloatingBadge
         delay={0.7}
-        style={{ bottom: 80, left: -10, display: "flex", alignItems: "center", gap: 8 }}
+        style={{ bottom: "15%", left: "-4%", display: "flex", alignItems: "center", gap: 8 }}
       >
         <div
           style={{
@@ -162,7 +161,7 @@ function HeroImage() {
       {/* Badge — right */}
       <FloatingBadge
         delay={0.85}
-        style={{ top: 80, right: -10, display: "flex", flexDirection: "column", gap: 4, minWidth: 118 }}
+        style={{ top: "15%", right: "-4%", display: "flex", flexDirection: "column", gap: 4, minWidth: 118 }}
       >
         <div style={{ fontSize: 10, color: "#999" }}>Expert doctors</div>
         <div style={{ fontSize: 18, fontWeight: 600, color: "#0a0a0a", letterSpacing: "-0.02em", lineHeight: 1 }}>
@@ -259,12 +258,11 @@ export default function Hero() {
           flexDirection: "column",
           justifyContent: "center",
           gap: 24,
-          padding: "60px 48px",
           maxWidth: 600,
           position: "relative",
           zIndex: 1,
         }}
-        className="max-md:px-6 max-md:pt-12 max-md:pb-8"
+        className="px-12 py-[60px] max-md:px-6 max-md:pt-12 max-md:pb-8"
       >
         {/* Eyebrow pill */}
         <motion.div

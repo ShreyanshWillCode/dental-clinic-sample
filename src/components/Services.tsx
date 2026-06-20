@@ -113,12 +113,11 @@ function ServiceCard({ s }: { s: Service }) {
 
 export default function Services() {
   return (
-    <section id="services" style={{ padding: "88px 0", background: "#fff" }}>
+    <section id="services" style={{ padding: "var(--section-py) 0", background: "#fff" }}>
       <div className="max-w-[1200px] mx-auto px-5 md:px-10 w-full">
         {/* Header */}
         <div
-          style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 48 }}
-          className="max-md:flex-col max-md:items-start max-md:gap-4"
+          className="flex justify-between items-end mb-12 max-md:flex-col max-md:items-start max-md:gap-4"
         >
           <div>
             <ScrollReveal blur>
@@ -142,8 +141,8 @@ export default function Services() {
             </ScrollReveal>
           </div>
           <ScrollReveal delay={0.1}>
-            <p style={{ fontSize: 13, color: "#888", maxWidth: 200, textAlign: "right", lineHeight: 1.6 }}
-               className="max-md:text-left max-md:max-w-full">
+            <p style={{ fontSize: 13, color: "#888", maxWidth: 200, lineHeight: 1.6 }}
+               className="text-right max-md:text-left max-md:max-w-full">
               Comprehensive dental solutions for every stage of life
             </p>
           </ScrollReveal>

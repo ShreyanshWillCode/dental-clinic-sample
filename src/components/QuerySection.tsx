@@ -73,7 +73,7 @@ export default function QuerySection() {
   return (
     <>
       {/* ─── Before/After — dark section with parallax ──────────── */}
-      <section id="results" style={{ background: "#0a0a0a", padding: "88px 0", overflow: "hidden" }}>
+      <section id="results" style={{ background: "#0a0a0a", padding: "var(--section-py) 0", overflow: "hidden" }}>
         <div className="max-w-[1200px] mx-auto px-5 md:px-10 w-full">
           {/* Header */}
           <ScrollReveal blur>
@@ -106,7 +106,7 @@ export default function QuerySection() {
       </section>
 
       {/* ─── Insurance ────────────────────────────────────────────── */}
-      <section style={{ padding: "56px 0", background: "#fff", borderTop: "1px solid #f0f0f0" }}>
+      <section style={{ padding: "calc(var(--section-py) * 0.7) 0", background: "#fff", borderTop: "1px solid #f0f0f0" }}>
         <div className="max-w-[1200px] mx-auto px-5 md:px-10 w-full">
           <ScrollReveal blur>
             <div className="section-tag">Partners</div>
@@ -147,7 +147,7 @@ export default function QuerySection() {
       </section>
 
       {/* ─── Contact Form ─────────────────────────────────────────── */}
-      <section id="contact" style={{ padding: "88px 0", background: "#f8f8f8" }}>
+      <section id="contact" style={{ padding: "var(--section-py) 0", background: "#f8f8f8" }}>
         <div className="max-w-[1200px] mx-auto px-5 md:px-10 w-full">
           <div style={{ maxWidth: 600, margin: "0 auto", textAlign: "center", marginBottom: 48 }}>
             <ScrollReveal blur>

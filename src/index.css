@@ -44,6 +44,8 @@
   --shadow-card: 0 4px 24px rgba(0,0,0,0.06);
   --shadow-float: 0 8px 32px rgba(0,0,0,0.10);
   --shadow-cta:  0 8px 28px rgba(26,110,248,0.32);
+
+  --section-py: clamp(4rem, 8vw, 5.5rem);
 }
 
 /* Screen reader only — visually hidden but accessible */

@@ -104,7 +104,7 @@ function ReviewCard({ r }: { r: Review }) {
 
 export default function Reviews() {
   return (
-    <section id="reviews" style={{ padding: "88px 0", background: "#fff" }}>
+    <section id="reviews" style={{ padding: "var(--section-py) 0", background: "#fff" }}>
       <div className="max-w-[1200px] mx-auto px-5 md:px-10 w-full">
         {/* Header */}
         <div style={{ marginBottom: 48 }}>

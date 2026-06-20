@@ -74,7 +74,7 @@ export default function FAQ() {
   const [openIdx, setOpenIdx] = useState<number>(0);
 
   return (
-    <section id="faq" style={{ padding: "88px 0", background: "#fff" }}>
+    <section id="faq" style={{ padding: "var(--section-py) 0", background: "#fff" }}>
       <div className="max-w-[1200px] mx-auto px-5 md:px-10 w-full">
         <div style={{ gap: 64 }} className="grid grid-cols-1 md:grid-cols-2">
           {/* Left — Content */}

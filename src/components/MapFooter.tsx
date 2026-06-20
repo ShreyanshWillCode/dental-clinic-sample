@@ -19,7 +19,7 @@ export default function MapFooter() {
   };
 
   return (
-    <footer style={{ background: "#0a0a0a", paddingTop: 88, borderTop: "1px solid #1a1a1a" }}>
+    <footer style={{ background: "#0a0a0a", paddingTop: "var(--section-py)", borderTop: "1px solid #1a1a1a" }}>
       <div className="max-w-[1200px] mx-auto px-5 md:px-10 w-full">
         <div
           style={{ gap: 48, marginBottom: 88 }}

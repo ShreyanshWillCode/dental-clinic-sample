@@ -45,6 +45,17 @@ export default function Nav() {
     return () => window.removeEventListener("scroll", handler);
   }, []);
 
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileOpen]);
+
   const scrollTo = (id: string) => {
     setMobileOpen(false);
     const el = document.getElementById(id);
@@ -142,9 +153,8 @@ export default function Nav() {
 
             {/* Mobile hamburger */}
             <motion.button
-              className="flex flex-col gap-[5px] p-1 lg:hidden"
+              className="flex flex-col gap-[5px] p-2 -mr-2 lg:hidden"
               onClick={() => setMobileOpen(!mobileOpen)}
-              style={{ padding: 4 }}
               aria-label="Toggle menu"
               whileTap={{ scale: 0.92 }}
             >

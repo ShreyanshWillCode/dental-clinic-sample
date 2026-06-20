@@ -147,12 +147,11 @@ export default function WhyUs() {
   };
 
   return (
-    <section id="doctors" style={{ background: "#f4f6ff", padding: "88px 0" }}>
+    <section id="doctors" style={{ background: "#f4f6ff", padding: "var(--section-py) 0" }}>
       <div className="max-w-[1200px] mx-auto px-5 md:px-10 w-full">
         {/* Header */}
         <div
-          style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 48 }}
-          className="max-md:flex-col max-md:items-start max-md:gap-4"
+          className="flex justify-between items-end mb-12 max-md:flex-col max-md:items-start max-md:gap-4"
         >
           <div>
             <ScrollReveal blur>
