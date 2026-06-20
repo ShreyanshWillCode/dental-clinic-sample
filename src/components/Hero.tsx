@@ -24,10 +24,12 @@ const itemVariants: Variants = {
 function FloatingBadge({
   children,
   style,
+  className,
   delay = 0,
 }: {
   children: React.ReactNode;
   style?: React.CSSProperties;
+  className?: string;
   delay?: number;
 }) {
   return (
@@ -35,6 +37,7 @@ function FloatingBadge({
       initial={{ opacity: 0, scale: 0.88, y: 8 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       transition={{ duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] }}
+      className={className}
       style={{
         position: "absolute",
         background: "rgba(255,255,255,0.92)",
@@ -131,7 +134,8 @@ function HeroImage() {
 
       <FloatingBadge
         delay={0.7}
-        style={{ bottom: "15%", left: "-4%", display: "flex", alignItems: "center", gap: 8 }}
+        className="bottom-[5%] -left-[10px] md:bottom-[25%] md:-left-[1%]"
+        style={{ display: "flex", alignItems: "center", gap: 8 }}
       >
         <div
           style={{
@@ -161,7 +165,8 @@ function HeroImage() {
       {/* Badge — right */}
       <FloatingBadge
         delay={0.85}
-        style={{ top: "15%", right: "-4%", display: "flex", flexDirection: "column", gap: 4, minWidth: 118 }}
+        className="-top-[30px] -right-[30px] md:top-[4%] md:-right-[6%]"
+        style={{ display: "flex", flexDirection: "column", gap: 2, minWidth: 118 }}
       >
         <div style={{ fontSize: 10, color: "#999" }}>Expert doctors</div>
         <div style={{ fontSize: 18, fontWeight: 600, color: "#0a0a0a", letterSpacing: "-0.02em", lineHeight: 1 }}>
