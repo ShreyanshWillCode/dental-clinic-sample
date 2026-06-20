@@ -5,22 +5,30 @@ import { MagneticButton } from "./animations/MagneticButton";
 import { AnimatedCounter } from "./animations/AnimatedCounter";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
-// ─── variants ─────────────────────────────────────────────────────────────────
-const containerVariants: Variants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.11, delayChildren: 0.15 } },
-};
+// ── Mobile detection — once per module load, no React overhead ────────────────
+const isMobile = typeof window !== "undefined" && !window.matchMedia("(pointer: fine)").matches;
 
-const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
-  },
-};
+// ── Desktop-only variants — on mobile everything renders immediately ───────────
+const containerVariants: Variants = isMobile
+  ? { hidden: {}, visible: {} } // no stagger on mobile
+  : {
+      hidden: {},
+      visible: { transition: { staggerChildren: 0.09, delayChildren: 0.05 } },
+    };
 
-// ─── Floating badge ───────────────────────────────────────────────────────────
+// Hero content items: use only opacity + translateY (GPU-composited) ──────────
+const itemVariants: Variants = isMobile
+  ? { hidden: { opacity: 1 }, visible: { opacity: 1 } } // instant on mobile
+  : {
+      hidden: { opacity: 0, y: 20 },
+      visible: {
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] },
+      },
+    };
+
+// ── Floating glassmorphism badge ──────────────────────────────────────────────
 function FloatingBadge({
   children,
   style,
@@ -30,11 +38,35 @@ function FloatingBadge({
   style?: React.CSSProperties;
   delay?: number;
 }) {
+  // On mobile: render immediately, no animation
+  if (isMobile) {
+    return (
+      <div
+        style={{
+          position: "absolute",
+          background: "rgba(255,255,255,0.92)",
+          backdropFilter: "blur(12px) saturate(180%)",
+          WebkitBackdropFilter: "blur(12px) saturate(180%)",
+          border: "1px solid rgba(255,255,255,0.7)",
+          boxShadow: "0 4px 24px rgba(0,0,0,0.10), inset 0 1px 0 rgba(255,255,255,0.8)",
+          borderRadius: 14,
+          padding: "10px 14px",
+          fontSize: 11,
+          fontWeight: 500,
+          zIndex: 2,
+          ...style,
+        }}
+      >
+        {children}
+      </div>
+    );
+  }
+
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.88, y: 8 }}
-      animate={{ opacity: 1, scale: 1, y: 0 }}
-      transition={{ duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] }}
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5, delay, ease: [0.16, 1, 0.3, 1] }}
       style={{
         position: "absolute",
         background: "rgba(255,255,255,0.92)",
@@ -47,6 +79,7 @@ function FloatingBadge({
         fontSize: 11,
         fontWeight: 500,
         zIndex: 2,
+        willChange: "transform",
         ...style,
       }}
     >
@@ -55,28 +88,29 @@ function FloatingBadge({
   );
 }
 
-// ─── Play icon ────────────────────────────────────────────────────────────────
+// ── Play icon ─────────────────────────────────────────────────────────────────
 function PlayIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
       <circle cx="12" cy="12" r="10" />
       <polygon points="10,8 16,12 10,16" fill="currentColor" stroke="none" />
     </svg>
   );
 }
 
-// ─── Hero image with subtle mouse-tilt ────────────────────────────────────────
+// ── Hero image with desktop-only mouse-tilt ───────────────────────────────────
 function HeroImage() {
   const reduced = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
 
+  // Only create motion values on desktop — mobile always gets static rendering
   const rawX = useMotionValue(0);
   const rawY = useMotionValue(0);
-  const rotX = useSpring(useTransform(rawY, [-300, 300], [6, -6]), { stiffness: 80, damping: 20 });
-  const rotY = useSpring(useTransform(rawX, [-300, 300], [-6, 6]), { stiffness: 80, damping: 20 });
+  const rotX = useSpring(useTransform(rawY, [-300, 300], [5, -5]), { stiffness: 80, damping: 20 });
+  const rotY = useSpring(useTransform(rawX, [-300, 300], [-5, 5]), { stiffness: 80, damping: 20 });
 
   const handleMove = (e: React.MouseEvent) => {
-    if (reduced || !ref.current) return;
+    if (reduced || isMobile || !ref.current) return;
     const rect = ref.current.getBoundingClientRect();
     rawX.set(e.clientX - rect.left - rect.width / 2);
     rawY.set(e.clientY - rect.top - rect.height / 2);
@@ -95,11 +129,12 @@ function HeroImage() {
       style={{
         position: "relative",
         transformStyle: "preserve-3d",
-        rotateX: reduced ? 0 : rotX,
-        rotateY: reduced ? 0 : rotY,
+        rotateX: reduced || isMobile ? 0 : rotX,
+        rotateY: reduced || isMobile ? 0 : rotY,
+        willChange: "transform",
       }}
     >
-      {/* Photo card — LCP element: no animation delay, eager load */}
+      {/* ── LCP Image — NO animation, loads immediately ── */}
       <div
         style={{
           width: "100%",
@@ -108,45 +143,44 @@ function HeroImage() {
           borderRadius: "24px 24px 64px 24px",
           overflow: "hidden",
           position: "relative",
+          contain: "layout paint",
         }}
       >
         <img
-          src="https://picsum.photos/seed/portrait-doctor/560/760"
+          src="/images/dentist.webp"
           alt="SmileCare dental professional"
           width={560}
           height={760}
           style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
           loading="eager"
           fetchPriority="high"
-          decoding="async"
+          decoding="sync"
         />
         <div
           style={{
             position: "absolute",
             inset: 0,
             background: "linear-gradient(180deg, rgba(26,110,248,0.08) 0%, transparent 55%)",
+            pointerEvents: "none",
           }}
         />
       </div>
 
-      {/* Badge — left */}
+      {/* ── Floating badge — left ── */}
       <FloatingBadge
-        delay={0.7}
+        delay={0.5}
         style={{ bottom: 80, left: -10, display: "flex", alignItems: "center", gap: 8 }}
       >
         <div
           style={{
-            width: 28,
-            height: 28,
+            width: 28, height: 28,
             background: "#EEF4FF",
             borderRadius: 8,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            display: "flex", alignItems: "center", justifyContent: "center",
             flexShrink: 0,
           }}
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path
               d="M12 2C9 2 6.5 4 6 7c-.5 3 .5 5 1 7.5s.5 4.5 1.5 4.5c1 0 1.5-1.5 2-3s1-2.5 1.5-2.5 1 1 1.5 2.5 1 3 2 3c1 0 1-3 1.5-4.5s1.5-4.5 1-7.5C17.5 4 15 2 12 2Z"
               fill="#1a6ef8"
@@ -154,17 +188,17 @@ function HeroImage() {
           </svg>
         </div>
         <div>
-          <div style={{ fontSize: 10, color: "#999" }}>Compassionate care</div>
+          <div style={{ fontSize: 10, color: "#767676" }}>Compassionate care</div>
           <div style={{ fontSize: 11, fontWeight: 500 }}>Confident smiles</div>
         </div>
       </FloatingBadge>
 
-      {/* Badge — right */}
+      {/* ── Floating badge — right ── */}
       <FloatingBadge
-        delay={0.85}
+        delay={0.65}
         style={{ top: 80, right: -10, display: "flex", flexDirection: "column", gap: 4, minWidth: 118 }}
       >
-        <div style={{ fontSize: 10, color: "#999" }}>Expert doctors</div>
+        <div style={{ fontSize: 10, color: "#767676" }}>Expert doctors</div>
         <div style={{ fontSize: 18, fontWeight: 600, color: "#0a0a0a", letterSpacing: "-0.02em", lineHeight: 1 }}>
           <AnimatedCounter target={100} suffix="k+" />
         </div>
@@ -198,19 +232,19 @@ function HeroImage() {
   );
 }
 
-// ─── Stat item with animated counter ─────────────────────────────────────────
+// ── Stat strip ────────────────────────────────────────────────────────────────
 function StatItem({ label, target, suffix }: { label: string; target: number; suffix: string }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
       <span style={{ fontSize: 22, fontWeight: 600, letterSpacing: "-0.03em", color: "#0a0a0a", lineHeight: 1 }}>
         <AnimatedCounter target={target} suffix={suffix} trigger />
       </span>
-      <span style={{ fontSize: 11, color: "#999", letterSpacing: "0.03em" }}>{label}</span>
+      <span style={{ fontSize: 11, color: "#767676", letterSpacing: "0.03em" }}>{label}</span>
     </div>
   );
 }
 
-// ─── Hero component ───────────────────────────────────────────────────────────
+// ── Hero ─────────────────────────────────────────────────────────────────────
 export default function Hero() {
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
@@ -226,13 +260,14 @@ export default function Hero() {
         background: "#fff",
         position: "relative",
         overflow: "hidden",
+        contain: "layout",
       }}
-      className="grid grid-cols-1 md:grid-cols-2"
+      className="hero-grid"
     >
-      {/* Animated gradient blob — CSS animation, GPU-composited, hidden on mobile */}
+      {/* Background blob — CSS animation, GPU transform-only, desktop only */}
       <div
-        aria-hidden
-        className="hidden md:block"
+        aria-hidden="true"
+        className="hidden-mobile"
         style={{
           position: "absolute",
           top: "10%",
@@ -246,10 +281,11 @@ export default function Hero() {
           zIndex: 0,
           animation: "hero-blob 8s ease-in-out infinite",
           willChange: "transform",
+          transform: "translateZ(0)",
         }}
       />
 
-      {/* Left — Content */}
+      {/* ── Left: Content ── */}
       <motion.div
         initial="hidden"
         animate="visible"
@@ -264,7 +300,7 @@ export default function Hero() {
           position: "relative",
           zIndex: 1,
         }}
-        className="max-md:px-6 max-md:pt-12 max-md:pb-8"
+        className="hero-left"
       >
         {/* Eyebrow pill */}
         <motion.div
@@ -276,29 +312,31 @@ export default function Hero() {
             padding: "6px 14px", borderRadius: 9999, width: "fit-content",
           }}
         >
-          {/* Pulsing dot — CSS animation, hidden on mobile to save GPU */}
+          {/* Pulsing dot — CSS transform only, desktop only */}
           <span
-            aria-hidden
-            className="hidden md:block"
+            aria-hidden="true"
+            className="hidden-mobile"
             style={{
               width: 6, height: 6, background: "#1a6ef8",
-              borderRadius: "50%", display: "block",
+              borderRadius: "50%",
               animation: "pulse-dot 2s ease-in-out infinite",
               willChange: "transform",
+              transform: "translateZ(0)",
             }}
           />
           Premium Dental Care
         </motion.div>
 
-        {/* Headline */}
+        {/* H1 — renders immediately (opacity:1 on mobile, fast fade on desktop) */}
         <motion.h1
           variants={itemVariants}
           style={{
-            fontSize: "clamp(2.6rem, 5vw, 3.2rem)",
+            fontSize: "clamp(2.4rem, 5vw, 3.2rem)",
             lineHeight: 1.05,
             letterSpacing: "-0.04em",
             fontWeight: 300,
             color: "#0a0a0a",
+            willChange: isMobile ? "auto" : "transform",
           }}
         >
           Transform your smile
@@ -319,32 +357,37 @@ export default function Hero() {
         {/* Subtext */}
         <motion.p
           variants={itemVariants}
-          style={{ fontSize: 14, color: "#666", lineHeight: 1.75, maxWidth: 380 }}
+          style={{ fontSize: 14, color: "#444", lineHeight: 1.75, maxWidth: 380 }}
         >
           We combine cutting-edge technology with compassionate care to deliver
           results that last a lifetime. Your healthy smile is our mission.
         </motion.p>
 
-        {/* Actions — magnetic primary CTA */}
-        <motion.div variants={itemVariants} style={{ display: "flex", alignItems: "center", gap: 16 }}>
+        {/* CTAs — render immediately on mobile */}
+        <motion.div
+          variants={itemVariants}
+          style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}
+        >
           <MagneticButton
             className="btn-primary"
             onClick={() => scrollTo("contact")}
-            strength={0.3}
+            strength={isMobile ? 0 : 0.3}
+            aria-label="Book a free dental consultation"
           >
             Book Free Consultation
           </MagneticButton>
           <motion.button
             className="btn-ghost"
-            whileHover={{ x: 3 }}
+            whileHover={isMobile ? {} : { x: 3 }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            style={{ willChange: "transform", transform: "translateZ(0)" }}
           >
             <PlayIcon />
             Watch our story
           </motion.button>
         </motion.div>
 
-        {/* Stats with counters */}
+        {/* Stats strip — always visible */}
         <motion.div
           variants={itemVariants}
           style={{
@@ -358,11 +401,8 @@ export default function Hero() {
         </motion.div>
       </motion.div>
 
-      {/* Right — Image with mouse-tilt */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.9, delay: 0.1 }}
+      {/* ── Right: Image panel ── */}
+      <div
         style={{
           background: "linear-gradient(135deg, #EEF4FF 0%, #F5F9FF 100%)",
           position: "relative",
@@ -371,13 +411,14 @@ export default function Hero() {
           justifyContent: "center",
           overflow: "hidden",
           zIndex: 1,
+          contain: "layout paint",
         }}
-        className="max-md:min-h-[360px]"
+        className="hero-right"
       >
-        {/* Animated gradient ring — CSS animation, GPU-composited, hidden on mobile */}
+        {/* Rotating ring — CSS transform only, desktop only */}
         <div
-          aria-hidden
-          className="hidden md:block"
+          aria-hidden="true"
+          className="hidden-mobile"
           style={{
             position: "absolute",
             width: 500,
@@ -387,13 +428,11 @@ export default function Hero() {
             pointerEvents: "none",
             animation: "hero-ring 30s linear infinite",
             willChange: "transform",
+            transform: "translateZ(0)",
           }}
         />
-
-        <motion.div initial="hidden" animate="visible" variants={containerVariants}>
-          <HeroImage />
-        </motion.div>
-      </motion.div>
+        <HeroImage />
+      </div>
     </section>
   );
 }

@@ -70,7 +70,7 @@ export function ScrollReveal({
   }, [delay, distance, useBlur, once, reduced]);
 
   return (
-    <div ref={ref} className={className} style={{ ...style, willChange: "transform, opacity" }}>
+    <div ref={ref} className={className} style={{ ...style, willChange: "transform, opacity", transform: "translateZ(0)" }}>
       {children}
     </div>
   );
@@ -137,7 +137,7 @@ export function StaggerReveal({
   return (
     <div ref={ref} className={className} style={style}>
       {children.map((child, i) => (
-        <div key={i} style={{ willChange: "transform, opacity" }}>
+        <div key={i} style={{ willChange: "transform, opacity", transform: "translateZ(0)" }}>
           {child}
         </div>
       ))}

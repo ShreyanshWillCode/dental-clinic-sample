@@ -49,7 +49,7 @@ export function ParallaxSection({
   }, [speed, reduced]);
 
   return (
-    <Tag ref={ref} className={className} style={style}>
+    <Tag ref={ref} className={className} style={{ ...style, willChange: "transform", transform: "translateZ(0)" }}>
       {children}
     </Tag>
   );

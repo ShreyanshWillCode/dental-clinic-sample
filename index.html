@@ -8,35 +8,91 @@
     <title>SmileCare Dental — Expert Dental Care in Bhubaneswar</title>
     <meta name="description" content="SmileCare Dental Clinic offers advanced dental treatments — teeth cleaning, implants, root canal, braces, cosmetic dentistry &amp; whitening. Book your appointment today!" />
 
-    <!-- DNS prefetch for external image CDN -->
-    <link rel="dns-prefetch" href="https://picsum.photos" />
-    <link rel="preconnect" href="https://picsum.photos" crossorigin />
-
-    <!-- Google Fonts — preconnect first, then non-blocking load -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <!-- Non-blocking font load: media=print trick, flips to all on load -->
+    
+    <!-- Inline Critical CSS for Hero & Nav (Payload < 3KB) -->
+    <style>
+      /* Variables & Reset */
+      :root {
+        --blue: #1a6ef8; --blue-light: #EEF4FF; --blue-dark: #1258d0;
+        --ink: #0a0a0a; --ink-mid: #444; --ink-muted: #767676; --ink-faint: #888;
+        --bg: #fafafa; --surface: #ffffff; --surface-2: #f8f8f8;
+        --border: #e8e8e8; --border-light: #f0f0f0;
+        --font-sans: 'DM Sans', system-ui, -apple-system, sans-serif;
+        --font-serif: 'DM Serif Display', Georgia, serif;
+        --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+        --ease-std: cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; isolation: isolate; overflow-x: hidden; }
+      body {
+        font-family: var(--font-sans); background: var(--bg); color: var(--ink);
+        line-height: 1.6; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility; scrollbar-gutter: stable; overflow-x: hidden;
+      }
+      img, svg { display: block; max-width: 100%; }
+      a { text-decoration: none; color: inherit; }
+      button { cursor: pointer; border: none; background: none; font-family: inherit; }
+
+      /* Hero/Nav Critical Layout Classes (replaces Tailwind for above-fold) */
+      .hero-grid { display: grid; grid-template-columns: repeat(1, minmax(0, 1fr)); }
+      .nav-container { max-width: 1200px; margin-left: auto; margin-right: auto; padding-left: 1.25rem; padding-right: 1.25rem; width: 100%; }
+      .hidden-mobile { display: none; }
+      .hidden-desktop { display: block; }
+      
+      @media (min-width: 768px) {
+        .hero-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .nav-container { padding-left: 2.5rem; padding-right: 2.5rem; }
+        .hidden-mobile { display: block; }
+        .hidden-desktop { display: none; }
+      }
+
+      .hero-left { padding-left: 1.5rem; padding-right: 1.5rem; padding-top: 3rem; padding-bottom: 2rem; }
+      .hero-right { min-height: 360px; }
+      @media (min-width: 768px) {
+        .hero-left { padding: 60px 48px; }
+        .hero-right { min-height: auto; }
+      }
+
+      /* Hero CSS Animations */
+      @keyframes hero-blob { 0%, 100% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.08); opacity: 0.7; } }
+      @keyframes hero-ring { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+      @keyframes pulse-dot { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.4); } }
+
+      /* Buttons */
+      .btn-primary {
+        display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
+        background: var(--ink); color: #fff; border: none; padding: 0.8rem 1.625rem;
+        border-radius: 9999px; font-size: 0.8125rem; font-family: var(--font-sans); font-weight: 500;
+        cursor: pointer; transition: background 0.2s var(--ease-std), transform 0.15s ease;
+      }
+      .btn-primary:hover { background: #222; }
+      .btn-ghost {
+        display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8125rem;
+        color: var(--ink-mid); background: none; border: none; cursor: pointer; transition: color 0.2s ease;
+      }
+      .btn-ghost:hover { color: var(--ink); }
+    </style>
+
+    <!-- Preload LCP hero image -->
+    <link rel="preload" as="image" href="/images/dentist.webp" fetchpriority="high" />
+
+    <!-- Non-blocking font load -->
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap"
+    />
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap"
       media="print"
       onload="this.media='all'"
     />
-    <!-- Fallback for no-JS -->
     <noscript>
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap"
-      />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" />
     </noscript>
-
-    <!-- Preload LCP hero image so browser discovers it before JS executes -->
-    <link
-      rel="preload"
-      as="image"
-      href="https://picsum.photos/seed/portrait-doctor/560/760"
-      fetchpriority="high"
-    />
   </head>
   <body>
     <div id="root"></div>
