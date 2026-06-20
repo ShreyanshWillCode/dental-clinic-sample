@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
@@ -10,7 +10,7 @@ interface ParallaxSectionProps {
   speed?: number; // 0 = pinned, negative = moves up faster, positive = slower
   className?: string;
   style?: React.CSSProperties;
-  tag?: keyof JSX.IntrinsicElements;
+  tag?: React.ElementType;
 }
 
 /**
@@ -49,7 +49,6 @@ export function ParallaxSection({
   }, [speed, reduced]);
 
   return (
-    // @ts-expect-error polymorphic tag
     <Tag ref={ref} className={className} style={style}>
       {children}
     </Tag>

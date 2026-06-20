@@ -1,14 +1,10 @@
 import { useRef } from "react";
-import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
 
-interface MagneticButtonProps {
+interface MagneticButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
-  className?: string;
-  style?: React.CSSProperties;
-  onClick?: () => void;
   strength?: number; // 0–1, default 0.35
-  "aria-label"?: string;
 }
 
 /**
@@ -22,7 +18,9 @@ export function MagneticButton({
   style,
   onClick,
   strength = 0.35,
-  "aria-label": ariaLabel,
+  onMouseMove,
+  onMouseLeave,
+  ...props
 }: MagneticButtonProps) {
   const ref = useRef<HTMLButtonElement>(null);
   const reduced = useReducedMotion();
@@ -34,18 +32,20 @@ export function MagneticButton({
   const x = useSpring(rawX, springConfig);
   const y = useSpring(rawY, springConfig);
 
-  const handleMouseMove = (e: React.MouseEvent) => {
+  const handleMouseMove = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (reduced || !ref.current) return;
     const rect = ref.current.getBoundingClientRect();
     const cx = rect.left + rect.width / 2;
     const cy = rect.top + rect.height / 2;
     rawX.set((e.clientX - cx) * strength);
     rawY.set((e.clientY - cy) * strength);
+    if (onMouseMove) onMouseMove(e);
   };
 
-  const handleMouseLeave = () => {
+  const handleMouseLeave = (e: React.MouseEvent<HTMLButtonElement>) => {
     rawX.set(0);
     rawY.set(0);
+    if (onMouseLeave) onMouseLeave(e);
   };
 
   return (
@@ -57,7 +57,7 @@ export function MagneticButton({
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       whileTap={{ scale: 0.96 }}
-      aria-label={ariaLabel}
+      {...(props as any)}
     >
       {children}
     </motion.button>

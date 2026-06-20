@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { ScrollReveal, StaggerReveal } from "./animations/ScrollReveal";
-import { MagneticButton } from "./animations/MagneticButton";
 
 interface Service {
   icon: React.ReactNode;

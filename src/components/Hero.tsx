@@ -1,16 +1,17 @@
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import type { Variants } from "framer-motion";
 import { MagneticButton } from "./animations/MagneticButton";
 import { AnimatedCounter } from "./animations/AnimatedCounter";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
 // ─── variants ─────────────────────────────────────────────────────────────────
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: {},
   visible: { transition: { staggerChildren: 0.11, delayChildren: 0.15 } },
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, y: 28, filter: "blur(4px)" },
   visible: {
     opacity: 1,
@@ -20,7 +21,7 @@ const itemVariants = {
   },
 };
 
-const imageVariants = {
+const imageVariants: Variants = {
   hidden: { scale: 0.92, opacity: 0 },
   visible: {
     scale: 1,
@@ -172,7 +173,7 @@ function HeroImage() {
       >
         <div style={{ fontSize: 10, color: "#999" }}>Expert doctors</div>
         <div style={{ fontSize: 18, fontWeight: 600, color: "#0a0a0a", letterSpacing: "-0.02em", lineHeight: 1 }}>
-          30+
+          <AnimatedCounter target={100} suffix="k+" />
         </div>
         <div style={{ display: "flex", marginTop: 4 }}>
           {["Dr", "M", "S"].map((av, i) => (
@@ -205,7 +206,7 @@ function HeroImage() {
 }
 
 // ─── Stat item with animated counter ─────────────────────────────────────────
-function StatItem({ num, label, target, suffix }: { num: string; label: string; target: number; suffix: string }) {
+function StatItem({ label, target, suffix }: { label: string; target: number; suffix: string }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
       <span style={{ fontSize: 22, fontWeight: 600, letterSpacing: "-0.03em", color: "#0a0a0a", lineHeight: 1 }}>
@@ -351,9 +352,9 @@ export default function Hero() {
             borderTop: "1px solid #f0f0f0", marginTop: 4,
           }}
         >
-          <StatItem num="12k+" label="Happy patients" target={12} suffix="k+" />
-          <StatItem num="98%" label="Satisfaction rate" target={98} suffix="%" />
-          <StatItem num="15yr" label="Of excellence" target={15} suffix="yr" />
+          <StatItem label="Happy patients" target={12} suffix="k+" />
+          <StatItem label="Satisfaction rate" target={98} suffix="%" />
+          <StatItem label="Of excellence" target={15} suffix="yr" />
         </motion.div>
       </motion.div>
 

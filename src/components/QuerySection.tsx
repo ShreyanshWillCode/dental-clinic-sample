@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { ScrollReveal, StaggerReveal } from "./animations/ScrollReveal";
-import { ParallaxSection } from "./animations/ParallaxSection";
 import { MagneticButton } from "./animations/MagneticButton";
-import { AnimatedCounter } from "./animations/AnimatedCounter";
 
 // ─── Before/After section ─────────────────────────────────────────────────────
 const BA_ITEMS = [
