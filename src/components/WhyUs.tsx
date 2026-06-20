@@ -9,7 +9,7 @@ interface Doctor {
   rating: string;
   reviews: number;
   schedule: string;
-  photoSeed: string;
+  image: string;
   gradientFrom: string;
   gradientTo: string;
 }
@@ -22,7 +22,7 @@ const DOCTORS: Doctor[] = [
     rating: "4.9",
     reviews: 348,
     schedule: "Mon — Fri · 9AM–6PM",
-    photoSeed: "dental-priya",
+    image: "/images/dentist-mask.png",
     gradientFrom: "#dce9ff",
     gradientTo: "#c8d9f5",
   },
@@ -33,7 +33,7 @@ const DOCTORS: Doctor[] = [
     rating: "4.8",
     reviews: 201,
     schedule: "Tue — Sat · 10AM–7PM",
-    photoSeed: "dental-arjun",
+    image: "/images/dentist-male.png",
     gradientFrom: "#e0d4f5",
     gradientTo: "#cdc0ec",
   },
@@ -44,7 +44,7 @@ const DOCTORS: Doctor[] = [
     rating: "5.0",
     reviews: 412,
     schedule: "Mon — Thu · 8AM–5PM",
-    photoSeed: "dental-kavya",
+    image: "/images/dentist-tools.png",
     gradientFrom: "#d4f0e4",
     gradientTo: "#c0e8d4",
   },
@@ -83,12 +83,12 @@ function DoctorCard({ doc }: { doc: Doctor }) {
         }}
       >
         <motion.img
-          src={`https://picsum.photos/seed/${doc.photoSeed}/320/320`}
+          src={doc.image}
           alt={doc.name}
           initial={{ scale: 1.05 }}
           whileHover={{ scale: 1.1 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          style={{ width: "100%", height: "100%", objectFit: "cover", position: "absolute", inset: 0 }}
+          style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center", position: "absolute", inset: 0 }}
           loading="lazy"
         />
         {/* Specialty badge */}

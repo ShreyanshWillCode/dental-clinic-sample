@@ -12,7 +12,7 @@ const containerVariants: Variants = {
 };
 
 const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: 27 },
   visible: {
     opacity: 1,
     y: 0,
@@ -101,21 +101,19 @@ function HeroImage() {
     >
       {/* Photo card — LCP element: no animation delay, eager load */}
       <div
+        className="w-full max-w-[200px] sm:max-w-[240px] md:max-w-[260px] lg:max-w-[280px] mx-auto"
         style={{
-          width: "100%",
-          maxWidth: 280,
-          aspectRatio: "280/380",
-          borderRadius: "24px 24px 64px 24px",
-          overflow: "hidden",
           position: "relative",
         }}
       >
         <img
-          src="https://picsum.photos/seed/portrait-doctor/560/760"
+          src="/images/dentist-tools.png"
           alt="SmileCare dental professional"
-          width={560}
-          height={760}
-          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+          className="w-full h-auto max-h-[50vh] sm:max-h-[60vh] object-contain object-bottom block mx-auto"
+          style={{
+            WebkitMaskImage: "linear-gradient(to bottom, black 75%, transparent 100%)",
+            maskImage: "linear-gradient(to bottom, black 75%, transparent 100%)"
+          }}
           loading="eager"
           fetchPriority="high"
           decoding="async"
@@ -123,8 +121,10 @@ function HeroImage() {
         <div
           style={{
             position: "absolute",
-            inset: 0,
-            background: "linear-gradient(180deg, rgba(26,110,248,0.08) 0%, transparent 55%)",
+            inset: "10% -10% 20% -10%",
+            background: "radial-gradient(circle, rgba(26,110,248,0.12) 0%, transparent 70%)",
+            borderRadius: "50%",
+            zIndex: -1,
           }}
         />
       </div>
