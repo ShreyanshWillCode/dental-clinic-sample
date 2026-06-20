@@ -107,7 +107,7 @@ function HeroImage() {
         }}
       >
         <img
-          src="/images/dentist-tools.png"
+          src="/images/dentist-tools.webp"
           alt="SmileCare dental professional"
           className="w-full h-auto max-h-[50vh] sm:max-h-[60vh] object-contain object-bottom block mx-auto"
           style={{
