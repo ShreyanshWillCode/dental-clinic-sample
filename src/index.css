@@ -1,4 +1,20 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap');
+/* ═══════════════════════════════════════════════
+   Hero CSS animations (replaces Framer Motion
+   continuous loops — GPU-composited: transform only)
+═══════════════════════════════════════════════ */
+@keyframes hero-blob {
+  0%, 100% { transform: scale(1);    opacity: 0.5; }
+  50%       { transform: scale(1.08); opacity: 0.7; }
+}
+@keyframes hero-ring {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes pulse-dot {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.4); }
+}
+
 @import "tailwindcss";
 
 /* ═══════════════════════════════════════════════
@@ -9,16 +25,16 @@
   --blue-light:  #EEF4FF;
   --blue-dark:   #1258d0;
   --ink:         #0a0a0a;
-  --ink-mid:     #555;
-  --ink-muted:   #888;
-  --ink-faint:   #aaa;
+  --ink-mid:     #444;   /* was #555 — bumped for WCAG AA 4.5:1 contrast on white */
+  --ink-muted:   #767676; /* min contrast ratio 4.54:1 on white */
+  --ink-faint:   #888;
   --bg:          #fafafa;
   --surface:     #ffffff;
   --surface-2:   #f8f8f8;
   --border:      #e8e8e8;
   --border-light: #f0f0f0;
 
-  --font-sans: 'DM Sans', system-ui, sans-serif;
+  --font-sans: 'DM Sans', system-ui, -apple-system, sans-serif;
   --font-serif: 'DM Serif Display', Georgia, serif;
 
   --ease-expo:  cubic-bezier(0.16, 1, 0.3, 1);
@@ -28,6 +44,19 @@
   --shadow-card: 0 4px 24px rgba(0,0,0,0.06);
   --shadow-float: 0 8px 32px rgba(0,0,0,0.10);
   --shadow-cta:  0 8px 28px rgba(26,110,248,0.32);
+}
+
+/* Screen reader only — visually hidden but accessible */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
 
 /* ═══════════════════════════════════════════════

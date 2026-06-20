@@ -5,19 +5,22 @@ import { useReducedMotion } from "../../hooks/useReducedMotion";
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Detect coarse pointer (mobile/tablet) — blur animation is non-composited on mobile GPUs
+const isFinePointer = typeof window !== "undefined" && window.matchMedia("(pointer: fine)").matches;
+
 interface ScrollRevealProps {
   children: React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
   delay?: number;       // seconds
   distance?: number;    // px to travel upward
-  blur?: boolean;       // blur-to-clear effect
+  blur?: boolean;       // blur-to-clear effect (desktop only)
   once?: boolean;       // only animate on first enter
 }
 
 /**
  * GSAP scroll-triggered reveal. Fades + translates into view.
- * Optional blur-to-clear for a premium feel.
+ * Optional blur-to-clear for a premium feel (disabled on mobile — non-composited).
  * Safe to nest inside Framer Motion sections.
  */
 export function ScrollReveal({
@@ -31,6 +34,8 @@ export function ScrollReveal({
 }: ScrollRevealProps) {
   const ref = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
+  // Only use blur on desktop (fine pointer) — on mobile it causes non-composited repaints
+  const useBlur = blur && isFinePointer;
 
   useEffect(() => {
     if (reduced || !ref.current) return;
@@ -39,13 +44,13 @@ export function ScrollReveal({
     const fromVars: gsap.TweenVars = {
       opacity: 0,
       y: distance,
-      ...(blur ? { filter: "blur(8px)" } : {}),
+      ...(useBlur ? { filter: "blur(8px)" } : {}),
     };
 
     const toVars: gsap.TweenVars = {
       opacity: 1,
       y: 0,
-      ...(blur ? { filter: "blur(0px)" } : {}),
+      ...(useBlur ? { filter: "blur(0px)" } : {}),
       duration: 0.75,
       delay,
       ease: "power3.out",
@@ -62,7 +67,7 @@ export function ScrollReveal({
     }, el);
 
     return () => ctx.revert();
-  }, [delay, distance, blur, once, reduced]);
+  }, [delay, distance, useBlur, once, reduced]);
 
   return (
     <div ref={ref} className={className} style={{ ...style, willChange: "transform, opacity" }}>

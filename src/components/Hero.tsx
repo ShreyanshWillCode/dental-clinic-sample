@@ -12,21 +12,11 @@ const containerVariants: Variants = {
 };
 
 const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 28, filter: "blur(4px)" },
+  hidden: { opacity: 0, y: 24 },
   visible: {
     opacity: 1,
     y: 0,
-    filter: "blur(0px)",
-    transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
-  },
-};
-
-const imageVariants: Variants = {
-  hidden: { scale: 0.92, opacity: 0 },
-  visible: {
-    scale: 1,
-    opacity: 1,
-    transition: { duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] },
+    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
   },
 };
 
@@ -109,9 +99,8 @@ function HeroImage() {
         rotateY: reduced ? 0 : rotY,
       }}
     >
-      {/* Photo card */}
-      <motion.div
-        variants={imageVariants}
+      {/* Photo card — LCP element: no animation delay, eager load */}
+      <div
         style={{
           width: "100%",
           maxWidth: 280,
@@ -123,9 +112,13 @@ function HeroImage() {
       >
         <img
           src="https://picsum.photos/seed/portrait-doctor/560/760"
-          alt="Dental professional"
-          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          alt="SmileCare dental professional"
+          width={560}
+          height={760}
+          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
           loading="eager"
+          fetchPriority="high"
+          decoding="async"
         />
         <div
           style={{
@@ -134,7 +127,7 @@ function HeroImage() {
             background: "linear-gradient(180deg, rgba(26,110,248,0.08) 0%, transparent 55%)",
           }}
         />
-      </motion.div>
+      </div>
 
       {/* Badge — left */}
       <FloatingBadge
@@ -236,11 +229,10 @@ export default function Hero() {
       }}
       className="grid grid-cols-1 md:grid-cols-2"
     >
-      {/* Animated gradient blob — background depth */}
-      <motion.div
+      {/* Animated gradient blob — CSS animation, GPU-composited, hidden on mobile */}
+      <div
         aria-hidden
-        animate={{ scale: [1, 1.08, 1], opacity: [0.5, 0.7, 0.5] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        className="hidden md:block"
         style={{
           position: "absolute",
           top: "10%",
@@ -252,6 +244,8 @@ export default function Hero() {
           background: "radial-gradient(circle, rgba(26,110,248,0.06) 0%, transparent 70%)",
           pointerEvents: "none",
           zIndex: 0,
+          animation: "hero-blob 8s ease-in-out infinite",
+          willChange: "transform",
         }}
       />
 
@@ -282,10 +276,16 @@ export default function Hero() {
             padding: "6px 14px", borderRadius: 9999, width: "fit-content",
           }}
         >
-          <motion.span
-            animate={{ scale: [1, 1.4, 1] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            style={{ width: 6, height: 6, background: "#1a6ef8", borderRadius: "50%", display: "block" }}
+          {/* Pulsing dot — CSS animation, hidden on mobile to save GPU */}
+          <span
+            aria-hidden
+            className="hidden md:block"
+            style={{
+              width: 6, height: 6, background: "#1a6ef8",
+              borderRadius: "50%", display: "block",
+              animation: "pulse-dot 2s ease-in-out infinite",
+              willChange: "transform",
+            }}
           />
           Premium Dental Care
         </motion.div>
@@ -374,11 +374,10 @@ export default function Hero() {
         }}
         className="max-md:min-h-[360px]"
       >
-        {/* Animated gradient ring */}
-        <motion.div
+        {/* Animated gradient ring — CSS animation, GPU-composited, hidden on mobile */}
+        <div
           aria-hidden
-          animate={{ rotate: 360 }}
-          transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+          className="hidden md:block"
           style={{
             position: "absolute",
             width: 500,
@@ -386,6 +385,8 @@ export default function Hero() {
             borderRadius: "50%",
             background: "conic-gradient(from 0deg, rgba(26,110,248,0.08), rgba(96,165,250,0.04), rgba(26,110,248,0.08))",
             pointerEvents: "none",
+            animation: "hero-ring 30s linear infinite",
+            willChange: "transform",
           }}
         />
 

@@ -4,11 +4,39 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/tooth.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#1a6ef8" />
     <title>SmileCare Dental — Expert Dental Care in Bhubaneswar</title>
-    <meta name="description" content="SmileCare Dental Clinic offers advanced dental treatments — teeth cleaning, implants, root canal, braces, cosmetic dentistry & whitening. Book your appointment today!" />
+    <meta name="description" content="SmileCare Dental Clinic offers advanced dental treatments — teeth cleaning, implants, root canal, braces, cosmetic dentistry &amp; whitening. Book your appointment today!" />
+
+    <!-- DNS prefetch for external image CDN -->
+    <link rel="dns-prefetch" href="https://picsum.photos" />
+    <link rel="preconnect" href="https://picsum.photos" crossorigin />
+
+    <!-- Google Fonts — preconnect first, then non-blocking load -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <!-- Non-blocking font load: media=print trick, flips to all on load -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+    <!-- Fallback for no-JS -->
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap"
+      />
+    </noscript>
+
+    <!-- Preload LCP hero image so browser discovers it before JS executes -->
+    <link
+      rel="preload"
+      as="image"
+      href="https://picsum.photos/seed/portrait-doctor/560/760"
+      fetchpriority="high"
+    />
   </head>
   <body>
     <div id="root"></div>

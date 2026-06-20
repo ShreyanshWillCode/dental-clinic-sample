@@ -198,32 +198,81 @@ export default function QuerySection() {
                   <p style={{ fontSize: 13, color: "#888", lineHeight: 1.7 }}>Our team will call you back shortly to confirm your appointment.</p>
                 </motion.div>
               ) : (
-                <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+                <form
+                  onSubmit={handleSubmit}
+                  style={{ display: "flex", flexDirection: "column", gap: 18 }}
+                  aria-label="Book a dental consultation"
+                  noValidate
+                >
                   <div style={{ gap: 14 }} className="grid grid-cols-1 sm:grid-cols-2">
-                    {[
-                      { label: "Full Name", key: "name", type: "text", ph: "Dr. Rahul Verma" },
-                      { label: "Phone Number", key: "phone", type: "tel", ph: "+91 98765 43210" },
-                    ].map(({ label, key, type, ph }) => (
-                      <div key={key} style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                        <label style={{ fontSize: 12, fontWeight: 500, color: "#555" }}>{label}</label>
-                        <input
-                          className="field"
-                          type={type}
-                          placeholder={ph}
-                          value={(form as any)[key]}
-                          onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
-                          required
-                        />
-                      </div>
-                    ))}
+                    <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                      <label htmlFor="form-name" style={{ fontSize: 12, fontWeight: 500, color: "#444" }}>
+                        Full Name
+                      </label>
+                      <input
+                        id="form-name"
+                        name="name"
+                        className="field"
+                        type="text"
+                        placeholder="Dr. Rahul Verma"
+                        value={form.name}
+                        onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                        autoComplete="name"
+                        required
+                        aria-required="true"
+                      />
+                    </div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                      <label htmlFor="form-phone" style={{ fontSize: 12, fontWeight: 500, color: "#444" }}>
+                        Phone Number
+                      </label>
+                      <input
+                        id="form-phone"
+                        name="phone"
+                        className="field"
+                        type="tel"
+                        placeholder="+91 98765 43210"
+                        value={form.phone}
+                        onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
+                        autoComplete="tel"
+                        required
+                        aria-required="true"
+                      />
+                    </div>
                   </div>
                   <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                    <label style={{ fontSize: 12, fontWeight: 500, color: "#555" }}>Email Address</label>
-                    <input className="field" type="email" placeholder="hello@example.com" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} required />
+                    <label htmlFor="form-email" style={{ fontSize: 12, fontWeight: 500, color: "#444" }}>
+                      Email Address
+                    </label>
+                    <input
+                      id="form-email"
+                      name="email"
+                      className="field"
+                      type="email"
+                      placeholder="hello@example.com"
+                      value={form.email}
+                      onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+                      autoComplete="email"
+                      required
+                      aria-required="true"
+                    />
                   </div>
                   <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                    <label style={{ fontSize: 12, fontWeight: 500, color: "#555" }}>Service Needed</label>
-                    <select className="field" style={{ appearance: "none" }} value={form.service} onChange={e => setForm(f => ({ ...f, service: e.target.value }))} required>
+                    <label htmlFor="form-service" style={{ fontSize: 12, fontWeight: 500, color: "#444" }}>
+                      Service Needed
+                    </label>
+                    <select
+                      id="form-service"
+                      name="service"
+                      className="field"
+                      style={{ appearance: "none" }}
+                      value={form.service}
+                      onChange={e => setForm(f => ({ ...f, service: e.target.value }))}
+                      required
+                      aria-required="true"
+                      aria-label="Select a dental service"
+                      aria-describedby="form-service-hint"
+                    >
                       <option value="">Select a service…</option>
                       <option value="general">General Dentistry</option>
                       <option value="cosmetic">Cosmetic Dentistry</option>
@@ -232,22 +281,39 @@ export default function QuerySection() {
                       <option value="rootcanal">Root Canal</option>
                       <option value="other">Other</option>
                     </select>
+                    <span id="form-service-hint" className="sr-only">
+                      Choose the dental treatment you are interested in
+                    </span>
                   </div>
                   <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                    <label style={{ fontSize: 12, fontWeight: 500, color: "#555" }}>Message (optional)</label>
-                    <textarea className="field" rows={3} placeholder="Tell us a bit about your dental concern…" value={form.message} onChange={e => setForm(f => ({ ...f, message: e.target.value }))} />
+                    <label htmlFor="form-message" style={{ fontSize: 12, fontWeight: 500, color: "#444" }}>
+                      Message{" "}
+                      <span style={{ color: "#999", fontWeight: 400 }}>(optional)</span>
+                    </label>
+                    <textarea
+                      id="form-message"
+                      name="message"
+                      className="field"
+                      rows={3}
+                      placeholder="Tell us a bit about your dental concern…"
+                      value={form.message}
+                      onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
+                    />
                   </div>
                   <MagneticButton
+                    type="submit"
                     className="btn-blue"
                     style={{ width: "100%", fontSize: 14, padding: "13px 24px", opacity: state === "submitting" ? 0.7 : 1 }}
                     strength={0.15}
+                    disabled={state === "submitting"}
+                    aria-label="Submit consultation request"
                   >
                     {state === "submitting" ? (
                       <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
                         <motion.span
                           animate={{ rotate: 360 }}
                           transition={{ duration: 0.9, repeat: Infinity, ease: "linear" }}
-                          style={{ display: "block", width: 14, height: 14, borderRadius: "50%", border: "2px solid rgba(255,255,255,0.4)", borderTopColor: "#fff" }}
+                          style={{ display: "block", width: 14, height: 14, borderRadius: "50%", border: "2px solid rgba(255,255,255,0.4)", borderTopColor: "#fff", willChange: "transform" }}
                         />
                         Sending…
                       </span>
@@ -255,7 +321,9 @@ export default function QuerySection() {
                       "Book Free Consultation"
                     )}
                   </MagneticButton>
-                  <p style={{ fontSize: 11, color: "#bbb", textAlign: "center" }}>We respond within 30 min · Mon–Sat 8AM–8PM</p>
+                  <p style={{ fontSize: 11, color: "#999", textAlign: "center" }}>
+                    We respond within 30 min · Mon–Sat 8AM–8PM
+                  </p>
                 </form>
               )}
             </div>

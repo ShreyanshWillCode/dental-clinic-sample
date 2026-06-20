@@ -90,12 +90,14 @@ export function LoadingScreen({ onComplete }: { onComplete: () => void }) {
             }}
           >
             <motion.div
-              animate={{ width: `${progress}%` }}
+              animate={{ scaleX: progress / 100 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
               style={{
                 height: "100%",
                 background: "linear-gradient(90deg, #1a6ef8, #60a5fa)",
                 borderRadius: 9999,
+                transformOrigin: "left center",
+                willChange: "transform",
               }}
             />
           </div>
