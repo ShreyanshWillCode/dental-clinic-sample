@@ -64,11 +64,9 @@ export default function Nav() {
         borderBottom: "1px solid #f0f0f0",
         transition: "background 0.35s ease, backdrop-filter 0.35s ease, box-shadow 0.35s ease",
         boxShadow: scrolled ? "0 1px 24px rgba(0,0,0,0.06)" : "none",
-        willChange: "transform, opacity",
-        transform: "translateZ(0)",
       }}
     >
-      <div className="nav-container">
+      <div className="max-w-[1200px] mx-auto px-5 md:px-10 w-full">
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 60 }}>
           {/* Logo */}
           <motion.div
@@ -102,8 +100,6 @@ export default function Nav() {
                   borderRadius: 8,
                   fontFamily: "var(--font-sans)",
                   transition: "color 0.2s ease",
-                  willChange: "transform",
-                  transform: "translateZ(0)",
                 }}
                 whileHover={{ color: "#0a0a0a" }}
               >
@@ -116,17 +112,15 @@ export default function Nav() {
                       initial={{ opacity: 0, scaleX: 0.5 }}
                       animate={{ opacity: 1, scaleX: 1 }}
                       exit={{ opacity: 0 }}
-                      transition={{ type: "spring", stiffness: 400, damping: 30 }}
                       style={{
                         position: "absolute",
                         bottom: 2,
                         left: "50%",
-                        transform: "translateX(-50%) translateZ(0)",
+                        transform: "translateX(-50%)",
                         width: 4,
                         height: 4,
                         borderRadius: "50%",
                         background: "#1a6ef8",
-                        willChange: "transform",
                       }}
                     />
                   )}
@@ -135,47 +129,38 @@ export default function Nav() {
             ))}
           </div>
 
-          {/* Magnetic CTA and Mobile toggle */}
+          {/* Magnetic CTA */}
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <div className="hidden-mobile">
-              <MagneticButton
-                className="btn-blue"
-                onClick={() => scrollTo("contact")}
-                style={{ fontSize: 13, padding: "9px 20px" }}
-                strength={0.25}
-              >
-                Book Appointment
-              </MagneticButton>
-            </div>
+            <MagneticButton
+              className="hidden lg:inline-flex btn-blue"
+              onClick={() => scrollTo("contact")}
+              style={{ fontSize: 13, padding: "9px 20px" }}
+              strength={0.25}
+            >
+              Book Appointment
+            </MagneticButton>
 
             {/* Mobile hamburger */}
-            <button
-              className="hidden-desktop"
-              style={{ display: "flex", flexDirection: "column", gap: 5, padding: 4, background: "transparent", border: "none" }}
+            <motion.button
+              className="flex flex-col gap-[5px] p-1 lg:hidden"
               onClick={() => setMobileOpen(!mobileOpen)}
+              style={{ padding: 4 }}
               aria-label="Toggle menu"
+              whileTap={{ scale: 0.92 }}
             >
               {[0, 1, 2].map((i) => (
                 <motion.span
                   key={i}
                   animate={{
                     rotate: mobileOpen && i !== 1 ? (i === 0 ? 45 : -45) : 0,
-                    y: mobileOpen && i !== 1 ? (i === 0 ? 6 : -6) : 0,
+                    y: mobileOpen ? (i === 0 ? 7 : i === 2 ? -7 : 0) : 0,
                     opacity: mobileOpen && i === 1 ? 0 : 1,
                   }}
-                  transition={{ duration: 0.2, ease: "easeOut" }}
-                  style={{
-                    display: "block",
-                    width: 22,
-                    height: 2,
-                    background: "#0a0a0a",
-                    borderRadius: 2,
-                    transformOrigin: "center",
-                    willChange: "transform, opacity",
-                  }}
+                  transition={{ duration: 0.2 }}
+                  style={{ display: "block", width: 22, height: 2, background: "#0a0a0a", borderRadius: 2 }}
                 />
               ))}
-            </button>
+            </motion.button>
           </div>
         </div>
       </div>

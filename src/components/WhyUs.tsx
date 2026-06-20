@@ -22,7 +22,7 @@ const DOCTORS: Doctor[] = [
     rating: "4.9",
     reviews: 348,
     schedule: "Mon — Fri · 9AM–6PM",
-    photoSeed: "doctor-priya",
+    photoSeed: "dental-priya",
     gradientFrom: "#dce9ff",
     gradientTo: "#c8d9f5",
   },
@@ -33,7 +33,7 @@ const DOCTORS: Doctor[] = [
     rating: "4.8",
     reviews: 201,
     schedule: "Tue — Sat · 10AM–7PM",
-    photoSeed: "doctor-arjun",
+    photoSeed: "dental-arjun",
     gradientFrom: "#e0d4f5",
     gradientTo: "#cdc0ec",
   },
@@ -44,7 +44,7 @@ const DOCTORS: Doctor[] = [
     rating: "5.0",
     reviews: 412,
     schedule: "Mon — Thu · 8AM–5PM",
-    photoSeed: "doctor-kavya",
+    photoSeed: "dental-kavya",
     gradientFrom: "#d4f0e4",
     gradientTo: "#c0e8d4",
   },
@@ -83,15 +83,13 @@ function DoctorCard({ doc }: { doc: Doctor }) {
         }}
       >
         <motion.img
-          src={`/images/${doc.photoSeed}.webp`}
+          src={`https://picsum.photos/seed/${doc.photoSeed}/320/320`}
           alt={doc.name}
           initial={{ scale: 1.05 }}
           whileHover={{ scale: 1.1 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          style={{ width: "100%", height: "100%", objectFit: "cover", position: "absolute", inset: 0, willChange: "transform", transform: "translateZ(0)" }}
-          sizes="(max-width: 768px) 100vw, 33vw"
+          style={{ width: "100%", height: "100%", objectFit: "cover", position: "absolute", inset: 0 }}
           loading="lazy"
-          decoding="async"
         />
         {/* Specialty badge */}
         <motion.div
